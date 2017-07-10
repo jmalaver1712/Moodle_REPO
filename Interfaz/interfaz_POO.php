@@ -4,6 +4,8 @@ require_once("php/config_interfaz_POO.php");//conexion BD
 
 $interfaz = new interfaz();
 
+$config_interfaz = $interfaz->config_interfaz();
+
 $user = $interfaz->datos_usuario(); 
 
 $estructura = $interfaz->estructura(); 
@@ -36,8 +38,12 @@ $lista_cursos = $interfaz->lista_cursos();
 
 <!--  -->
 <link type="text/css" rel="stylesheet" href="../interfaz/materialize/css/interfaz.css"  media="screen,projection"/>
-<link type="text/css" rel="stylesheet" href="../interfaz/materialize/css/materialize2.css"  media="screen,projection"/>
+<link type="text/css" rel="stylesheet" href="../interfaz/materialize/css/materialize.css"  media="screen,projection"/>
 <link type="text/css" rel="stylesheet" href="../interfaz/materialize/css/animations.css"  media="screen,projection"/>
+
+<?php 
+	require_once("materialize/css/config_interfaz.php"); 
+?>
 
 <script type="text/javascript" src="../interfaz/materialize/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../interfaz/materialize/js/materialize.js"></script>
@@ -421,7 +427,6 @@ $lista_cursos = $interfaz->lista_cursos();
 											<?= $enlace['nombre']; ?>
 											<br><br>
 											<iframe width="100%" height="450" src="<?= $enlace['enlace']; ?>" frameborder="0" allowfullscreen></iframe><br><br>
-											<?= $enlace['descripcion']; ?>
 											<?php
 										}
 										elseif($enlace['tipo'] == "enlace"){
@@ -566,8 +571,8 @@ $lista_cursos = $interfaz->lista_cursos();
 							$n_act = 1;
 							
 							foreach ($actividades as $row){
-								$fecha_inicio =  strftime("%#d %B %Y", $row['f_inicio']);
-								$fecha_final = strftime("%A - %#d %B %Y / %H:%M", $row['f_final']);
+								$fecha_inicio =  utf8_encode(strftime("%#d %B %Y", $row['f_inicio']));
+								$fecha_final = utf8_encode(strftime("%A - %#d %B %Y / %H:%M", $row['f_final']));
 								?>
 								<tr class="<?= $row['clase'] ?>">
 									<td><b><?= $n_act ?></b></td>

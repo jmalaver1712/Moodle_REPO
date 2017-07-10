@@ -11,6 +11,16 @@ class interfaz extends Conexion{
         parent::__construct();
     }
 
+    public function config_interfaz(){
+		$data = array();
+		$result = $this->_db->query("SELECT * FROM am_interfaz");
+		$config_int = $result->fetch_all(MYSQLI_ASSOC);
+		foreach ($config_int[0] as $row => $value) {
+			$data[$row] = $value;
+		}
+		return $data;
+	}
+
 
     // DATOS DEL USUARIO LOGIN
 	public function datos_usuario(){
@@ -25,7 +35,7 @@ class interfaz extends Conexion{
 		if (!$result) {
 			printf("Errormessage datos_usuario: %s\n", $this->_db->error);
 		}else{
-	        $rol_user = $result->fetch_array(MYSQLI_ASSOC);
+	        $rol_user = $result->fetch_all(MYSQLI_ASSOC);
 	        if(count($rol_user) > 0){
 	        	$rol = $rol_user['0']['roleid'];
 	        }
@@ -50,7 +60,7 @@ class interfaz extends Conexion{
 		if (!$datos_add) {
 			printf("Errormessage datos_add: %s\n", $this->_db->error);
 		}else{
-			$row = $datos_add->fetch_array(MYSQLI_ASSOC);
+			$row = $datos_add->fetch_all(MYSQLI_ASSOC);
 			foreach ($row as $key) {
 				foreach ($key as $data => $value) {
 					$usuario[$data] = $value;
@@ -66,7 +76,7 @@ class interfaz extends Conexion{
 	public function estructura(){
 		$data = array();
 		$result = $this->_db->query("SELECT a.modulo, a.semanas FROM am_tipo_curso a, am_cursos b WHERE a.tipo = b.tipo AND b.moodle_course_id = ".ID_CURSO);
-		$estructura = $result->fetch_array(MYSQLI_ASSOC);
+		$estructura = $result->fetch_all(MYSQLI_ASSOC);
 		foreach ($estructura as $row) {
 			$data[$row['modulo']] = $row['semanas'];
 		}
@@ -115,7 +125,7 @@ class interfaz extends Conexion{
 			printf("Errormessage data_noticias: %s\n", $this->_db->error);
 			 return $data;
 		}else{
-			$noticias = $result->fetch_array(MYSQLI_ASSOC);
+			$noticias = $result->fetch_all(MYSQLI_ASSOC);
 				foreach ($noticias as $noticia) {
 					if(is_null($noticia['enlace'])){
 						$noticia['enlace'] = URL_CAMPUS."/pages/ver_noticia.php?id=$noticia[id]&pagina=campus";
@@ -145,7 +155,7 @@ class interfaz extends Conexion{
 		if (!$result) {
 			printf("Errormessage top5: %s\n", $this->_db->error);
 		}
-        $top5 = $result->fetch_array(MYSQLI_ASSOC);
+        $top5 = $result->fetch_all(MYSQLI_ASSOC);
         $aux = 0;
         foreach ($top5 as $top) {
         	if($top['contextid'] == NULL){
@@ -168,7 +178,7 @@ class interfaz extends Conexion{
 		if (!$result) {
 			printf("Errormessage secciones: %s\n", $this->_db->error);
 		}
-		$secciones = $result->fetch_array(MYSQLI_ASSOC);
+		$secciones = $result->fetch_all(MYSQLI_ASSOC);
 		$aux = 0;
 		foreach ($secciones as $row){
 			$seccion = $row['id'];
@@ -199,7 +209,7 @@ class interfaz extends Conexion{
 				if (!$result) {
 					printf("Errormessage all_contenido: %s\n", $this->_db->error);
 				}
-				$recursos = $result->fetch_array(MYSQLI_ASSOC);
+				$recursos = $result->fetch_all(MYSQLI_ASSOC);
 				$data[$aux] = $recursos; 
 				$aux++;
 			}
@@ -222,7 +232,7 @@ class interfaz extends Conexion{
 				if (!$result) {
 					printf("Errormessage con_documentos: %s\n", $this->_db->error);
 				}
-				$documentos = $result->fetch_array(MYSQLI_ASSOC);
+				$documentos = $result->fetch_all(MYSQLI_ASSOC);
 				//print_r($documentos);
 
 					foreach ($documentos as $documento) {
@@ -245,7 +255,6 @@ class interfaz extends Conexion{
 		return $data;
 	}
 
-
 	// CONSULTA DE ENLACES
 	public function con_enlaces(){
 		$origen = $this->all_contenido();
@@ -257,7 +266,7 @@ class interfaz extends Conexion{
 
 					$seccion = $value['section'];
 					
-					$result = $this->_db->query("select name, externalurl, intro from ".DB_PRE."url where id = ".$value['instance']." and course = ".ID_CURSO);
+					$result = $this->_db->query("select name, externalurl from ".DB_PRE."url where id = ".$value['instance']." and course = ".ID_CURSO);
 					if (!$result) {
 						printf("Errormessage con_enlaces: %s\n", $this->_db->error);
 					}
@@ -268,7 +277,6 @@ class interfaz extends Conexion{
 						$indice = trim($enlaces['0']," ");
 						$enlace = $url['externalurl'];
 						$nombre = utf8_encode($enlaces['1']);
-						$descripcion = utf8_encode($url['intro']);
 
 						$tipo = "enlace";
 						$ident = $enlace;
@@ -305,7 +313,6 @@ class interfaz extends Conexion{
 							$data[$aux]['tipo'] = $tipo;
 							$data[$aux]['enlace'] = $ident;
 							$data[$aux]['nombre'] = $nombre;
-							$data[$aux]['descripcion'] = $descripcion;
 							$aux++;
 					}
 				}
@@ -330,7 +337,7 @@ class interfaz extends Conexion{
 				if (!$result) {
 					printf("Errormessage con_wikis: %s\n", $this->_db->error);
 				}
-				$wikis = $result->fetch_array(MYSQLI_ASSOC);
+				$wikis = $result->fetch_all(MYSQLI_ASSOC);
 					foreach ($wikis as $wiki) {
 
 						$enlaces = explode('-',$wiki['name']);
@@ -367,7 +374,7 @@ class interfaz extends Conexion{
 				if (!$result) {
 					printf("Errormessage con_scorm: %s\n", $this->_db->error);
 				}
-				$scorms = $result->fetch_array(MYSQLI_ASSOC);
+				$scorms = $result->fetch_all(MYSQLI_ASSOC);
 					foreach ($scorms as $scorm) {
 
 						$enlaces = explode('-',$scorm['name']);
@@ -497,7 +504,7 @@ class interfaz extends Conexion{
 					}
 					$nowtime = time();
 
-					$actividad = $result->fetch_array(MYSQLI_ASSOC);
+					$actividad = $result->fetch_all(MYSQLI_ASSOC);
 					foreach ($actividad as $val) {
 
 						if ($val['Inicio'] <= $nowtime && $val['Final'] >= $nowtime){
@@ -552,7 +559,7 @@ class interfaz extends Conexion{
 		return $data;
 	}
 
-		public function lista_cursos(){
+	public function lista_cursos(){
         $data = array();
         $data_del = array();
 
@@ -561,7 +568,7 @@ class interfaz extends Conexion{
 			SELECT DISTINCT 
 			b.id, 
 			b.estado,
-			a.id,
+			a.id AS idhost,
 			a.wwwroot,
 			d.nombre_curso,
 			d.moodle_course_id
@@ -585,7 +592,7 @@ class interfaz extends Conexion{
             printf("Errormessage lista_cursos: %s\n", $this->_db->error);
         }else{
         	$aux = 0;
-            $hosts = $result->fetch_array(MYSQLI_ASSOC);
+            $hosts = $result->fetch_all(MYSQLI_ASSOC);
             foreach ($hosts as $host) {
 
             	if($host['estado'] == 'A'){
@@ -597,7 +604,7 @@ class interfaz extends Conexion{
 						if($host['id'] == 1){
 							$data[$aux]['enlace'] = URL_ROOT."/course/view.php?id=".$host['moodle_course_id'];
 						}else{
-							$data[$aux]['enlace'] = URL_ROOT."/auth/mnet/jump.php?hostid=".$host['id']."&course=".$host['moodle_course_id'];		
+							$data[$aux]['enlace'] = URL_ROOT."/auth/mnet/jump.php?hostid=".$host['idhost']."&course=".$host['moodle_course_id'];		
 						}
 						$data[$aux]['nombre'] = utf8_encode($host['nombre_curso']);
             		}
@@ -614,6 +621,63 @@ class interfaz extends Conexion{
         
         return $data;
 
+    }
+
+    public function lista_cursos_esclavo(){
+        $data = array();
+        $data_user = $this->datos_usuario();
+        $result = $this->_db->query("
+			SELECT c.codigo_curso, c.nombre_curso, a.wwwroot, c.moodle_course_id
+			FROM ".DB_PRE."mnet_host       a,
+			am_usuario_curso    b,
+			am_cursos           c,
+			am_campus           d
+			WHERE a.wwwroot = d.url_master
+			AND c.codigo_curso = b.codigo_curso
+			AND a.id > '2'
+			AND b.fecha <> 0
+			AND b.estado = 'A'
+			AND b.idnumber = ".$data_user['codigo_estudiante']
+			);
+        if (!$result) {
+            printf("Errormessage lista_cursos: %s\n", $this->_db->error);
+        }else{
+        	$aux = 0;
+            $hosts = $result->fetch_all(MYSQLI_ASSOC);
+            foreach ($hosts as $host) {
+            	$data_host = $this->obtener_idhost($host['moodle_course_id']);
+            	if($data_host == 1){
+            		$data[$aux]['enlace'] = URL_ROOT."/course/view.php?id=".$host['moodle_course_id'];
+            	}else{
+            		$data[$aux]['enlace'] = $host['wwwroot']."/auth/mnet/jump.php?course=".$host['moodle_course_id'];
+            	}
+        		$data[$aux]['nombre'] = utf8_encode($host['nombre_curso']);	
+        		$aux++;	
+        	}
+        }
+        return $data;
+    }
+
+
+    public function obtener_idhost($id_curso){
+    	$data = 0;
+
+    	$result = $this->_db->query("
+			SELECT a.id FROM ".DB_PRE."mnet_host a, am_campus b, am_cursos c
+			WHERE a.wwwroot = b.url_master
+			AND b.id = c.n_campus
+			AND c.moodle_course_id =".$id_curso
+			);
+
+		if (!$result) {
+		    printf("Errormessage lista_cursos: %s\n", $this->_db->error);
+		}else{
+		    $hosts = $result->fetch_all(MYSQLI_ASSOC);
+		    foreach ($hosts as $host) {
+				$data = $host['id'];
+			}
+		}
+		return $data;
     }
 
 }

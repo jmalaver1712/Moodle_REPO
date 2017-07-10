@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300); 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
+
 .cuerpo_interfaz{
-  background-color: #F5F5F5;
   padding: 10px;
-  font-family: 'Open Sans Condensed', sans-serif;
+  background-color: #F5F5F5;
 }
 
 a, a:hover, a:visited, a:active, a:focus{  
@@ -51,9 +51,6 @@ a, a:hover, a:visited, a:active, a:focus{
   padding: 0px !important;
   border-right-style: solid;
   border-right-width: 1px;
-  background-color: rgba(59,83,107,1); 
-  color: white !important;
-  /*min-width: 180px !important;*/
 }
 
 @media only screen and (max-width: 980px) {
@@ -69,8 +66,6 @@ a, a:hover, a:visited, a:active, a:focus{
 
 .usuario{
   padding: 20px;
-  background-color: #4D7CAA;
-  color: white;
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,12 +96,11 @@ a, a:hover, a:visited, a:active, a:focus{
 }
 
 .submenu_panel:hover{
-  background-color: #4D7CAA;
+  /*background-color: #4D7CAA;*/
 }
 
 
 .submenu_panel a{
-  color: #FFF;
   font-size: 2.5em !important;
   width: 100%;
   padding: 10px 0px 10px 0px;
