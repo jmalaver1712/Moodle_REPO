@@ -640,19 +640,23 @@ class interfaz extends Conexion{
 			AND b.idnumber = ".$data_user['codigo_estudiante']
 			);
         if (!$result) {
-            printf("Errormessage lista_cursos: %s\n", $this->_db->error);
+            printf("Errormessage lista_cursos esclavo: %s\n", $this->_db->error);
         }else{
         	$aux = 0;
             $hosts = $result->fetch_all(MYSQLI_ASSOC);
             foreach ($hosts as $host) {
-            	$data_host = $this->obtener_idhost($host['moodle_course_id']);
-            	if($data_host == 1){
-            		$data[$aux]['enlace'] = URL_ROOT."/course/view.php?id=".$host['moodle_course_id'];
-            	}else{
-            		$data[$aux]['enlace'] = $host['wwwroot']."/auth/mnet/jump.php?course=".$host['moodle_course_id'];
+            	if($host['moodle_course_id'] != null && $host['moodle_course_id'] != ID_CURSO){
+
+					$data_host = $this->obtener_idhost($host['moodle_course_id']);
+					if($data_host == 1){
+					$data[$aux]['enlace'] = URL_ROOT."/course/view.php?id=".$host['moodle_course_id'];
+					}else{
+					$data[$aux]['enlace'] = $host['wwwroot']."/auth/mnet/jump.php?course=".$host['moodle_course_id'];
+					}
+					$data[$aux]['nombre'] = utf8_encode($host['nombre_curso']);	
+					$aux++;	
+					
             	}
-        		$data[$aux]['nombre'] = utf8_encode($host['nombre_curso']);	
-        		$aux++;	
         	}
         }
         return $data;
@@ -661,7 +665,6 @@ class interfaz extends Conexion{
 
     public function obtener_idhost($id_curso){
     	$data = 0;
-
     	$result = $this->_db->query("
 			SELECT a.id FROM ".DB_PRE."mnet_host a, am_campus b, am_cursos c
 			WHERE a.wwwroot = b.url_master
@@ -670,11 +673,13 @@ class interfaz extends Conexion{
 			);
 
 		if (!$result) {
-		    printf("Errormessage lista_cursos: %s\n", $this->_db->error);
+		    // printf("Errormessage lista_cursos host: %s\n\n\n", $this->_db->error);
 		}else{
 		    $hosts = $result->fetch_all(MYSQLI_ASSOC);
 		    foreach ($hosts as $host) {
-				$data = $host['id'];
+		    	if($host['id'] != null){	
+		    		$data = $host['id'];
+		    	}
 			}
 		}
 		return $data;
@@ -711,5 +716,6 @@ $data_add = array(
 	array('descripcion' => $t_act_didac,'icono' => $i_act_didac),
 	array('descripcion' => $t_wiki,'icono' => $i_wiki),
 	);
+
 
 ?>

@@ -29,7 +29,8 @@ $actividades = $interfaz->actividades();
 
 $comunicacion = $interfaz->con_comunicacion($ids_seccion);
 
-$lista_cursos = $interfaz->lista_cursos();
+$lista_cursos = $interfaz->lista_cursos_esclavo();
+
 
 ?>
 <meta name="viewport" content="width=device-width, initial-scale=0.5"/>
@@ -571,8 +572,8 @@ $lista_cursos = $interfaz->lista_cursos();
 							$n_act = 1;
 							
 							foreach ($actividades as $row){
-								$fecha_inicio =  utf8_encode(strftime("%#d %B %Y", $row['f_inicio']));
-								$fecha_final = utf8_encode(strftime("%A - %#d %B %Y / %H:%M", $row['f_final']));
+								$fecha_inicio =  strftime("%#d %B %Y", $row['f_inicio']);
+								$fecha_final = strftime("%A - %#d %B %Y / %H:%M", $row['f_final']);
 								?>
 								<tr class="<?= $row['clase'] ?>">
 									<td><b><?= $n_act ?></b></td>

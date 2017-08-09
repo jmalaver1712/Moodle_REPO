@@ -137,19 +137,24 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `am_interfaz`;
+
 CREATE TABLE `am_interfaz` (
-  `id_interfaz` int(11) NOT NULL AUTO_INCREMENT,
+  `id_interfaz` int(11) NOT NULL,
   `fondo` varchar(15) DEFAULT NULL,
   `menu` varchar(15) DEFAULT NULL,
   `header` varchar(15) DEFAULT NULL,
   `hover_menu` varchar(15) DEFAULT NULL,
   `fuente` varchar(100) DEFAULT NULL,
+  `color_fuente` varchar(15) NOT NULL,
   PRIMARY KEY (`id_interfaz`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `am_interfaz`
 --
+
+INSERT INTO `am_interfaz` (`id_interfaz`, `fondo`, `menu`, `header`, `hover_menu`, `fuente`, `color_fuente`) VALUES
+(1, '#F5F5F5', '#3B536B', '#4D7CAA', '#4D7CAA', '\'Open Sans Condensed\', sans-serif', '#FFFFFF');
 
 LOCK TABLES `am_interfaz` WRITE;
 UNLOCK TABLES;
